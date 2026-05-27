@@ -1,1 +1,133 @@
-
+Algoritmo Sistema_Gestion_Calificaciones
+	
+	// =======================================================
+	// 1. DEFINICIÓN DE VARIABLES Y ARREGLOS
+	// =======================================================
+	Definir MAX_ALUMNOS, cantidadEstudiantes, menu_opcion Como Entero
+	Definir sumaNotas, promedio Como Real
+	Definir aprobados, reprobados Como Entero
+	Definir i Como Entero
+	Definir nombreBuscar Como Cadena
+	Definir encontrado Como Logico
+	
+	// Definición de tipos de datos para los arreglos
+	Definir nombres Como Cadena
+	Definir calificaciones Como Real
+	
+	// Dimensionamiento usando valores enteros directos
+	MAX_ALUMNOS <- 100
+	Dimension nombres[100]
+	Dimension calificaciones[100]
+	
+	cantidadEstudiantes <- 0
+	menu_opcion <- 0
+	
+	// =======================================================
+	// 2. MENÚ PRINCIPAL DEL SISTEMA (Usando Si-Entonces)
+	// =======================================================
+	Mientras menu_opcion <> 4 Hacer
+		Escribir "========================================="
+		Escribir "  SISTEMA DE GESTIÓN DE CALIFICACIONES   "
+		Escribir "========================================="
+		Escribir "1. Registrar Estudiantes y Calificaciones"
+		Escribir "2. Mostrar Reporte Estadístico"
+		Escribir "3. Buscar Estudiante"
+		Escribir "4. Salir"
+		Escribir "Seleccione una opción (1-4):"
+		Leer menu_opcion
+		
+		Si menu_opcion = 1 Entonces
+			Escribir "--- REGISTRO DE CALIFICACIONES ---"
+			Escribir "¿Cuántos estudiantes desea registrar?:"
+			Leer cantidadEstudiantes
+			
+			Si cantidadEstudiantes > MAX_ALUMNOS O cantidadEstudiantes <= 0 Entonces
+				Escribir "Error: Cantidad no válida (Máximo ", MAX_ALUMNOS, ")"
+				cantidadEstudiantes <- 0
+			Sino
+				Para i <- 0 Hasta cantidadEstudiantes - 1 Con Paso 1 Hacer
+					Escribir "Ingrese el nombre del estudiante ", i + 1, ":"
+					Leer nombres[i]
+					
+					Repetir
+						Escribir "Ingrese la calificación de ", nombres[i], " (0-10):"
+						Leer calificaciones[i]
+						Si calificaciones[i] < 0 O calificaciones[i] > 10 Entonces
+							Escribir "Nota inválida. Debe estar entre 0 y 10."
+						FinSi
+					Hasta Que calificaciones[i] >= 0 Y calificaciones[i] <= 10
+				FinPara
+				Escribir "¡Registro completado con éxito!"
+			FinSi
+		Sino
+			Si menu_opcion = 2 Entonces
+				Escribir "--- REPORTE ESTADÍSTICO ---"
+				Si cantidadEstudiantes = 0 Entonces
+					Escribir "Error: No hay estudiantes registrados aún."
+				Sino
+					sumaNotas <- 0
+					aprobados <- 0
+					reprobados <- 0
+					
+					Para i <- 0 Hasta cantidadEstudiantes - 1 Con Paso 1 Hacer
+						sumaNotas <- sumaNotas + calificaciones[i]
+						
+						Si calificaciones[i] >= 7.0 Entonces
+							aprobados <- aprobados + 1
+						Sino
+							reprobados <- reprobados + 1
+						FinSi
+					FinPara
+					
+					promedio <- sumaNotas / cantidadEstudiantes
+					
+					Escribir "? Promedio general del grupo: ", promedio
+					Escribir "? Total de alumnos aprobados (>= 7): ", aprobados
+					Escribir "? Total de alumnos reprobados (< 7): ", reprobados
+				FinSi
+			Sino
+				Si menu_opcion = 3 Entonces
+					Escribir "--- BÚSQUEDA SECUENCIAL DE ESTUDIANTE ---"
+					Si cantidadEstudiantes = 0 Entonces
+						Escribir "Error: No hay estudiantes registrados para buscar."
+					Sino
+						Escribir "Ingrese el nombre del estudiante a buscar:"
+						Leer nombreBuscar
+						
+						encontrado <- Falso
+						
+						Para i <- 0 Hasta cantidadEstudiantes - 1 Con Paso 1 Hacer
+							Si nombres[i] = nombreBuscar Entonces
+								encontrado <- Verdadero
+								Escribir "Estudiante encontrado:"
+								Escribir "- Nombre: ", nombres[i]
+								Escribir "- Calificación: ", calificaciones[i]
+								
+								Si calificaciones[i] >= 7.0 Entonces
+									Escribir "- Estado: [Aprobado]"
+								Sino
+									Escribir "- Estado: [Reprobado]"
+								FinSi
+								
+								i <- cantidadEstudiantes 
+							FinSi
+						FinPara
+						
+						Si encontrado = Falso Entonces
+							Escribir "Error: El estudiante [", nombreBuscar, "] no se encuentra registrado."
+						FinSi
+					FinSi
+				Sino
+					Si menu_opcion = 4 Entonces
+						Escribir "Saliendo del sistema. ¡Hasta luego!"
+					Sino
+						Escribir "Opción inválida. Intente de nuevo."
+					FinSi
+				FinSi
+			FinSi
+		FinSi
+		
+		Escribir "" 
+	FinMientras
+	
+FinAlgoritmo
